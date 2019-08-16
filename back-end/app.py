@@ -27,7 +27,7 @@ class Character(db.Model):
     __tablename__ = "character"
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String(), unique=True)
+    name = db.Column(db.String())
     total_hitpoints = db.Column(db.Integer)
     current_hitpoints = db.Column(db.Integer)
     armor = db.Column(db.Integer)
@@ -69,6 +69,12 @@ def get_user(user):
     user = db.session.query(User.id, User.username, User.password, User.save).filter(User.username == user).first()
     return jsonify(user)
 
+@app.route("/users/<user>/characters/get_all", methods=["GET"])
+def get_all_users_characters(user):
+    user = db.session.query(User.id).filter(User.username == user).first()[0]
+    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.user == user).all()
+    return jsonify(all_characters)
+
 @app.route("/users/save/<user>", methods=["PUT"])
 def save(user):
     if request.content_type == "application/json":
@@ -82,6 +88,63 @@ def save(user):
 
         return jsonify("User saved")
     return jsonify("Error saving user")
+
+@app.route("/characters/add", methods=["POST"])
+def add_character():
+    if request.content_type == "application/json":
+        post_data = request.get_json()
+        user = post_data.get("user")
+        name = post_data.get("name")
+        total_hitpoints = 100
+        current_hitpoints = 100
+        armor = 0
+        attack = 5
+        items = {}
+
+        record = Character(user, name, total_hitpoints, current_hitpoints, armor, attack, items)
+
+        db.session.add(record)
+        db.session.commit()
+
+        return jsonify("Added character")
+    return jsonify("Error adding character")
+
+@app.route("/characters/get_all", methods=["GET"])
+def get_all_characters():
+    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).all()
+    return jsonify(all_characters)
+
+@app.route("/characters/get/<character>", methods=["GET"])
+def get_character(character):
+    character = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.id == character).first()
+    return jsonify(character)
+
+@app.route("/characters/update/<character>", methods=["PUT"])
+def update_character(character):
+    if request.content_type == "application/json":
+        put_data = request.get_json()
+        user = put_data.get("user")
+        name = put_data.get("name")
+        total_hitpoints = put_data.get("total_hitpoints")
+        current_hitpoints = put_data.get("current_hitpoints")
+        armor = put_data.get("armor")
+        attack = put_data.get("attack")
+        items = put_data.get("items")
+
+        character = db.session.query(Character).filter(Character.id == character).first()
+
+        character.user = user
+        character.name = name
+        character.total_hitpoints = total_hitpoints
+        character.current_hitpoints = current_hitpoints
+        character.armor = armor
+        character.attack = attack
+        character.items = items
+
+        db.session.commit()
+
+        return jsonify("Updated character")
+    return jsonify("Error updating character")
 
 if __name__ == "__main__":
     app.run(debug=True)
