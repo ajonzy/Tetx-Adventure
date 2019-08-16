@@ -109,6 +109,20 @@ def add_character():
         return jsonify("Added character")
     return jsonify("Error adding character")
 
+@app.route("/users/verification", methods=["POST"])
+def verify_user():
+    if request.content_type == "application/json":
+        post_data = request.get_json()
+        user_password = post_data.get("password")
+        password_hash = db.session.query(User.password).filter(User.username == post_data.get("username")).first()[0]
+        if password_hash is None:
+            return jsonify("User NOT Verified")
+        valid_password = str(user_password) == str(password_hash)
+        if valid_password:
+            return jsonify("User Verified")
+        return jsonify("User NOT Verified")
+    return jsonify("Error verifying user")
+
 @app.route("/characters/get_all", methods=["GET"])
 def get_all_characters():
     all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).all()
