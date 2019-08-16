@@ -5,10 +5,11 @@ export default class Register extends Component {
     super(props)
     
     this.state = {
-      userName: '',
+      username: '',
       password: ''
     }
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -17,14 +18,40 @@ export default class Register extends Component {
     })
   }
 
+  handleSubmit(event) {
+    fetch("http://127.0.0.1:5000/users/add", {
+      method: "POST",
+      headers: {
+          "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response === 'Added user') {
+          console.log('You Created A User')
+        } else {
+          console.log('You FAILED To Create A User')
+        }
+    })
+    .catch(error => {
+      console.log('You FAILED To Create A User')
+    });
+
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div>
         <div className="login-register-container">
           <div className="login-register-wrapper">
-            <input className="userName" type="text" name="userName" onChange={this.handleChange}/>
+            <input className="username" type="text" name="username" onChange={this.handleChange}/>
             <input className="password" type="password" name="password" onChange={this.handleChange}/>
-            <button className="register">REGISTER</button>
+            <button className="register" onClick={this.handleSubmit}>REGISTER</button>
           </div>
         </div>
       </div>
