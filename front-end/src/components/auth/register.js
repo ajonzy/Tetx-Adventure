@@ -6,7 +6,8 @@ export default class Register extends Component {
     
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      usernameTaken: false
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,7 +15,8 @@ export default class Register extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      usernameTaken: false
     })
   }
 
@@ -33,12 +35,27 @@ export default class Register extends Component {
     .then(response => {
         if (response === 'Added user') {
           console.log('You Created A User')
+          fetch(`http://127.0.0.1:5000/users/get/${this.state.username}`, {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json"
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            this.props.callback(data)
+          })
+        } else if (response === "User already exists") {
+          console.log("Taken!!!")
+          this.setState({
+            usernameTaken: true
+          })
         } else {
           console.log('You FAILED To Create A User')
         }
     })
     .catch(error => {
-      console.log('You FAILED To Create A User')
+      console.log(error)
     });
 
     event.preventDefault();
@@ -52,6 +69,7 @@ export default class Register extends Component {
             <input className="username" type="text" name="username" onChange={this.handleChange}/>
             <input className="password" type="password" name="password" onChange={this.handleChange}/>
             <button className="register" onClick={this.handleSubmit}>REGISTER</button>
+            {this.state.usernameTaken ? <div>Username Taken!</div> : null}
           </div>
         </div>
       </div>

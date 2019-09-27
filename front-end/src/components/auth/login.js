@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Home from "../pages/home"
 
 export default class Login extends Component {
   constructor(props) {
@@ -44,10 +43,7 @@ export default class Login extends Component {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-          this.setState({
-            user: data
-          })
+          this.props.callback(data)
         })
       }
       else {
@@ -65,8 +61,6 @@ export default class Login extends Component {
             <input className="username" type="text" name="username" onChange={this.handleChange}/>
             <input className="password" type="password" name="password" onChange={this.handleChange}/>
             <button className="register" onClick={this.handleSubmit}>LOGIN</button>
-            {console.log(this.state.user)}
-            {this.state.user ? <Home user={this.state.user} /> : null}
           </div>
         </div>
       </div>

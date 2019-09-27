@@ -4,27 +4,28 @@ App-In-A-Day Fun!
 
 ## MVP
 ### User Creation-Login / Save-Load
-- [ ] User Register
-  - [ ] BackEnd
-  - [ ] FrontEnd
-- [ ] User Login
-  - [ ] BackEnd
-  - [ ] FrontEnd
+- [X] User Register
+  - [X] BackEnd
+  - [X] FrontEnd
+- [X] User Login
+  - [X] BackEnd
+  - [X] FrontEnd
 - [ ] Save
-  - [ ] BackEnd
+  - [X] BackEnd
   - [ ] FrontEnd
 - [ ] Load
-  - [ ] BackEnd
+  - [X] BackEnd
   - [ ] FrontEnd
 
-### Players
-- [ ] Players
-  - [ ] Name
-  - [ ] HitPoints
-  - [ ] CurrentHitPoint
-  - [ ] Attack
-  - [ ] Armor
-  - [ ] Items
+### Characters
+- [X] Player
+  - [X] Name
+  - [X] HitPoints
+  - [X] CurrentHitPoint
+  - [X] Attack
+  - [X] Armor
+  - [X] Items
+  - [X] Room
 
 ### Monsters (Front-End Only)
 - [ ] Monsters
@@ -36,12 +37,14 @@ App-In-A-Day Fun!
 
 ### Rooms (Front-End Only)
 - [ ] Rooms
+  - [ ] Room Id
   - [ ] Room Type (Descriptive, Forks, Dead Ends)
   - [ ] Require Items?
   - [ ] Contains Items?
   - [ ] Contains Monsters?
 
 ### Stretch Goals
+- [ ] Character overview
 - [ ] More Games
 - [ ] Stop Listing Options
 - [ ] Classes

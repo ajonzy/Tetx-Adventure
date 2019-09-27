@@ -72,12 +72,16 @@ def add_user():
         password = post_data.get("password")
         save = {}
 
-        record = User(username, password, save)
+        test_for_user = db.session.query(User.id).filter(User.username == username).first()
+        if test_for_user:
+            return jsonify("User already exists")
+        else:
+            record = User(username, password, save)
 
-        db.session.add(record)
-        db.session.commit()
+            db.session.add(record)
+            db.session.commit()
 
-        return jsonify("Added user")
+            return jsonify("Added user")
     return jsonify("Error adding user")
 
 @app.route("/users/get_all", methods=["GET"])

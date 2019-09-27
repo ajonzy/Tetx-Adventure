@@ -8,8 +8,6 @@ import reducers from "./reducers";
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-import Temp from "./components/pages/temp"
-
 import "./style/main.scss";
 
 function main() {
