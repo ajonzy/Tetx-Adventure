@@ -72,7 +72,7 @@ export default function home(props) {
             <input type="text" value={newCharacterName} onChange={() => updateNewCharacterName(event.target.value)} placeholder="Name"/>
             <button onClick={createNewCharacter}>New Character</button>
 
-            {save != {} ?
+            {Object.entries(save).length != 0 ?
             <div>
                 <h4>Or reload last save</h4>
                 <button>Load</button>
