@@ -58,8 +58,8 @@ export default class Login extends Component {
       <div>
         <div className="login-register-container">
           <div className="login-register-wrapper">
-            <input className="username" type="text" name="username" onChange={this.handleChange}/>
-            <input className="password" type="password" name="password" onChange={this.handleChange}/>
+            <input className="username" type="text" name="username" onChange={this.handleChange} placeholder="Username"/>
+            <input className="password" type="password" name="password" onChange={this.handleChange} placeholder="Password"/>
             <button className="register" onClick={this.handleSubmit}>LOGIN</button>
           </div>
         </div>
