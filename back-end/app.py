@@ -35,8 +35,9 @@ class Character(db.Model):
     armor = db.Column(db.Integer)
     attack = db.Column(db.Integer)
     items = db.Column(db.PickleType)
+    room = db.Column(db.Integer)
 
-    def __init__(self, user, name, total_hitpoints, current_hitpoints, armor, attack, items):
+    def __init__(self, user, name, total_hitpoints, current_hitpoints, armor, attack, items, room):
         self.user = user
         self.name = name
         self.total_hitpoints = total_hitpoints
@@ -44,6 +45,7 @@ class Character(db.Model):
         self.armor = armor
         self.attack = attack
         self.items = items
+        self.room = room
 
 
 class UserSchema(ma.Schema):
@@ -53,7 +55,7 @@ class UserSchema(ma.Schema):
 
 class CharacterSchema(ma.Schema):
     class Meta:
-        fields = ("id", "user", "name", "total_hitpoints", "current_hitpoints", "armor", "attack", "items")
+        fields = ("id", "user", "name", "total_hitpoints", "current_hitpoints", "armor", "attack", "items", "room")
 
 
 user_schema = UserSchema()
@@ -92,7 +94,7 @@ def get_user(user):
 @app.route("/users/<user>/characters/get_all", methods=["GET"])
 def get_all_users_characters(user):
     user = db.session.query(User.id).filter(User.username == user).first()[0]
-    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.user == user).all()
+    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items, Character.room).filter(Character.user == user).all()
     results = characters_schema.dump(all_characters)
     return jsonify(results)
 
@@ -121,8 +123,9 @@ def add_character():
         armor = 0
         attack = 5
         items = {}
+        room = 0
 
-        record = Character(user, name, total_hitpoints, current_hitpoints, armor, attack, items)
+        record = Character(user, name, total_hitpoints, current_hitpoints, armor, attack, items, room)
 
         db.session.add(record)
         db.session.commit()
@@ -146,13 +149,13 @@ def verify_user():
 
 @app.route("/characters/get_all", methods=["GET"])
 def get_all_characters():
-    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).all()
+    all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items, Character.room).all()
     results = characters_schema.dump(all_characters)
     return jsonify(results)
 
 @app.route("/characters/get/<character>", methods=["GET"])
 def get_character(character):
-    character = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.id == character).first()
+    character = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items, Character.room).filter(Character.id == character).first()
     return character_schema.jsonify(character)
 
 @app.route("/characters/update/<character>", methods=["PUT"])
@@ -166,6 +169,7 @@ def update_character(character):
         armor = put_data.get("armor")
         attack = put_data.get("attack")
         items = put_data.get("items")
+        room = put_data.get("room")
 
         character = db.session.query(Character).filter(Character.id == character).first()
 
@@ -176,6 +180,7 @@ def update_character(character):
         character.armor = armor
         character.attack = attack
         character.items = items
+        character.room = room
 
         db.session.commit()
 
