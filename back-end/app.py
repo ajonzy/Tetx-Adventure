@@ -81,18 +81,20 @@ def add_user():
 @app.route("/users/get_all", methods=["GET"])
 def get_all_users():
     all_users = db.session.query(User.id, User.username, User.password, User.save).all()
-    return jsonify(all_users)
+    results = users_schema.dump(all_users)
+    return jsonify(results)
 
 @app.route("/users/get/<user>", methods=["GET"])
 def get_user(user):
     user = db.session.query(User.id, User.username, User.password, User.save).filter(User.username == user).first()
-    return jsonify(user)
+    return user_schema.jsonify(user)
 
 @app.route("/users/<user>/characters/get_all", methods=["GET"])
 def get_all_users_characters(user):
     user = db.session.query(User.id).filter(User.username == user).first()[0]
     all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.user == user).all()
-    return jsonify(all_characters)
+    results = characters_schema.dump(all_characters)
+    return jsonify(results)
 
 @app.route("/users/save/<user>", methods=["PUT"])
 def save(user):
@@ -145,12 +147,13 @@ def verify_user():
 @app.route("/characters/get_all", methods=["GET"])
 def get_all_characters():
     all_characters = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).all()
-    return jsonify(all_characters)
+    results = characters_schema.dump(all_characters)
+    return jsonify(results)
 
 @app.route("/characters/get/<character>", methods=["GET"])
 def get_character(character):
     character = db.session.query(Character.id, Character.user, Character.name, Character.total_hitpoints, Character.current_hitpoints, Character.armor, Character.attack, Character.items).filter(Character.id == character).first()
-    return jsonify(character)
+    return character_schema.jsonify(character)
 
 @app.route("/characters/update/<character>", methods=["PUT"])
 def update_character(character):
