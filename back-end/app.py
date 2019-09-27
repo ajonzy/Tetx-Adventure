@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask_cors import CORS
 import os
 
@@ -10,6 +11,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "app.sqlite")
 
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 class User(db.Model):
     __tablename__ = "user"
@@ -42,6 +44,23 @@ class Character(db.Model):
         self.armor = armor
         self.attack = attack
         self.items = items
+
+
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "username", "password", "save")
+
+
+class CharacterSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "user", "name", "total_hitpoints", "current_hitpoints", "armor", "attack", "items")
+
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+character_schema = CharacterSchema()
+characters_schema = CharacterSchema(many=True)
 
 @app.route("/users/add", methods=["POST"])
 def add_user():
