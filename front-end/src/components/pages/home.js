@@ -30,7 +30,7 @@ export default function home(props) {
         const characterList = []
         for (const character of characters) {
             characterList.push(
-                <h5 key={character.id}>{character.name}</h5>
+                <h5 key={character.id} onClick={() => props.callback(character)}>{character.name}</h5>
             )
         }
         return characterList
