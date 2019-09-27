@@ -56,6 +56,7 @@ export default class App extends Component {
         {this.state.characterSelected 
         ?
           <div className="character-selected">
+            <h2>Player: {this.state.user.username}</h2>
             <button onClick={this.handleLogout}>Log Out</button>
             <Room player={this.state.user} character={this.state.character}/>
           </div>

@@ -75,7 +75,7 @@ export default function home(props) {
             {Object.entries(save).length != 0 ?
             <div>
                 <h4>Or reload last save</h4>
-                <button>Load</button>
+                <button onClick={() => props.callback(player.save)}>Load</button>
             </div>
             : null}
         </div>

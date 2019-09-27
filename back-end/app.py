@@ -109,6 +109,7 @@ def save(user):
         save = put_data.get("save")
 
         user = db.session.query(User).filter(User.username == user).first()
+        print(user)
 
         user.save = save
         db.session.commit()

@@ -1,18 +1,21 @@
 import React, { useState } from 'react'
 
 import Start from "../rooms/00-Start"
+import One from "../rooms/01"
 
-export default function(props) {
+export default function room(props) {
     const [player] = useState(props.player)
     const [character, updateCharacter] = useState(props.character)
 
     const updateRoom = (room) => {
-        character.room = room
-        updateCharacter(character)
+        let updatedCharacter = {}
+        Object.assign(updatedCharacter, character)
+        updatedCharacter.room = room
+        updateCharacter(updatedCharacter)
     }
 
     const handleSave = () => {
-        fetch(`http://127.0.0.1:5000/users/save/${player.id}`, {
+        fetch(`http://127.0.0.1:5000/users/save/${player.username}`, {
             method: "PUT",
             headers: {
                 "Content-type": "application/json"
@@ -54,11 +57,14 @@ export default function(props) {
     }
 
     const rooms = {
-        0: <Start updateRoom={updateRoom} updateCharacter={updateCharacter}/>
+        0: <Start updateRoom={updateRoom} updateCharacter={updateCharacter}/>,
+        1: <One updateRoom={updateRoom} updateCharacter={updateCharacter}/>,
+        2: ""
     }
 
     return (
         <div>
+            <h2>Character: {character.name}</h2>
             <button onClick={handleSave}>Save</button>
             {rooms[character.room]}
         </div>
