@@ -12,9 +12,9 @@ export default function home(props) {
     useEffect(() => {
         if (!componentMounted.current) {
             updatePlayer(props.user)
-            updateSave(props.user[3])
+            updateSave(props.user.save)
 
-            fetch(`http://127.0.0.1:5000/users/${props.user[1]}/characters/get_all`, {
+            fetch(`http://127.0.0.1:5000/users/${props.user.username}/characters/get_all`, {
                 method: "GET"
             })
             .then(response => response.json())
@@ -30,7 +30,7 @@ export default function home(props) {
         const characterList = []
         for (const character of characters) {
             characterList.push(
-                <h5 key={character[0]}>{character[2]}</h5>
+                <h5 key={character.id}>{character.name}</h5>
             )
         }
         return characterList
@@ -43,14 +43,14 @@ export default function home(props) {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                "user": player[0],
+                "user": player.id,
                 "name": newCharacterName
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data == "Added character") {
-                fetch(`http://127.0.0.1:5000/users/${player[1]}/characters/get_all`, {
+                fetch(`http://127.0.0.1:5000/users/${player.username}/characters/get_all`, {
                     method: "GET"
                 })
                 .then(response => response.json())
@@ -64,7 +64,7 @@ export default function home(props) {
     return (
         player ?
         <div className="home">
-            <h2>Welcome {player[1]}!</h2>
+            <h2>Welcome {player.username}!</h2>
             <h4>Select your character:</h4>
 
             {characters ? displayCharacters(characters) : null}
