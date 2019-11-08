@@ -101,6 +101,16 @@ export default function room(props) {
         });
     }
 
+    const renderInventory = () => {
+        const items = []
+        Object.keys(character.items).forEach(item => {
+            items.push(
+                <div key={item} className="inventory-item">{item}</div>
+            )
+        })
+        return items
+    }
+
     const roomFunctions = {
         updateRoom: updateRoom,
         updateCharacter: updateCharacter,
@@ -123,6 +133,9 @@ export default function room(props) {
                 character.current_hitpoints > 0 ? <button onClick={handleSave}>Save</button> : null
             }
             {rooms[character.room]}
+            <hr/>
+            {Object.keys(character.items).length > 0 ? <h2>Inventory</h2> : null}
+            {renderInventory()}
         </div>
     )
 }
