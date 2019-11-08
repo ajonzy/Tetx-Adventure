@@ -4,12 +4,12 @@ export default function roomOne(props) {
     const guardDog = {
         name: "guard Dog",
         hitpoints: 10,
-        attack: 5,
-        items: "rustyKey"
+        attack: 500,
+        items: ["Rusty Key", "Health Potion"]
     }
 
     return (
-        props.character.items.rustyKey ?
+        props.character.items["Rusty Key"] ?
         <div>
             <p>You find yourself in a dark hallway... There is nothing here but a guard dog cowering in the corner.</p>
             <hr/>

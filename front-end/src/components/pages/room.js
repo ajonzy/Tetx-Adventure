@@ -2,21 +2,23 @@ import React, { useState } from 'react'
 
 import Start from "../rooms/00-Start"
 import WinFight from "../rooms/winFight"
+import LoseFight from "../rooms/loseFight"
 import One from "../rooms/01"
 import Two from "../rooms/02"
 
 export default function room(props) {
     const [player] = useState(props.player)
     const [character, updateCharacter] = useState(props.character)
+    const [lastSavedCharacter, updateLastSavedCharacter] = useState(props.character)
     const [previousRoom, updatePreviousRoom] = useState(0)
+    const [lastItemsGained, updateLastItemsGained] = useState([])
 
     const updateRoom = (room) => {
-        // let updatedCharacter = {}
+        let updatedCharacter = {}
         updatePreviousRoom(character.room)
-        // Object.assign(updatedCharacter, character)
-        // updatedCharacter.room = room
-        character.room = room
-        updateCharacter(character)
+        Object.assign(updatedCharacter, character)
+        updatedCharacter.room = room
+        updateCharacter(updatedCharacter)
     }
 
     const handleFight = (mob) => {
@@ -36,9 +38,16 @@ export default function room(props) {
 
         if (fightResult.current_hitpoints > 0) {
             console.log("You won!")
-            fightResult.items["rustyKey"] = true
+            mob.items.forEach(item => {
+                fightResult.items[item] = true
+            })
+            updateLastItemsGained(mob.items)
             updateCharacter(fightResult)
             updateRoom("winFight")
+        } else {
+            console.log("You lost!")
+            updateCharacter(fightResult)
+            updateRoom("loseFight")
         }
     }
 
@@ -74,6 +83,7 @@ export default function room(props) {
             .then(response => response.json())
             .then(response => {
                 console.log(response)
+                updateLastSavedCharacter(character)
             })
             .catch(error => {
                 console.log(error)
@@ -91,7 +101,8 @@ export default function room(props) {
     }
 
     const rooms = {
-        winFight: <WinFight character={character} previousRoom={previousRoom} roomFunctions={roomFunctions}/>,
+        winFight: <WinFight character={character} previousRoom={previousRoom} itemsGained={lastItemsGained} roomFunctions={roomFunctions}/>,
+        loseFight: <LoseFight character={character} savedCharacter={lastSavedCharacter} roomFunctions={roomFunctions}/>,
         0: <Start character={character} roomFunctions={roomFunctions}/>,
         1: <One character={character} roomFunctions={roomFunctions}/>,
         2: <Two character={character} roomFunctions={roomFunctions}/>,
@@ -100,7 +111,9 @@ export default function room(props) {
     return (
         <div>
             <h2>Character: {character.name}</h2>
-            <button onClick={handleSave}>Save</button>
+            {
+                character.current_hitpoints > 0 ? <button onClick={handleSave}>Save</button> : null
+            }
             {rooms[character.room]}
         </div>
     )
