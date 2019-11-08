@@ -4,8 +4,8 @@ export default function roomOne(props) {
     const guardDog = {
         name: "guard Dog",
         hitpoints: 10,
-        attack: 500,
-        items: ["Rusty Key", "Health Potion"]
+        attack: 5,
+        items: ["Rusty Key"]
     }
 
     return (

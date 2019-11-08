@@ -21,6 +21,13 @@ export default function room(props) {
         updateCharacter(updatedCharacter)
     }
 
+    const handleItemFind = (item) => {
+        let updatedCharacter = {}
+        Object.assign(updatedCharacter, character)
+        updatedCharacter.items[item] = true
+        updateCharacter(updatedCharacter)
+    }
+
     const handleFight = (mob) => {
         const fight = (character, mob) => {
             while (character.current_hitpoints > 0 && mob.hitpoints > 0) {
@@ -97,7 +104,8 @@ export default function room(props) {
     const roomFunctions = {
         updateRoom: updateRoom,
         updateCharacter: updateCharacter,
-        handleFight: handleFight
+        handleFight: handleFight,
+        handleItemFind: handleItemFind
     }
 
     const rooms = {
