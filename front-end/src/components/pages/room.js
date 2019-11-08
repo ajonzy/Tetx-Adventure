@@ -1,17 +1,45 @@
 import React, { useState } from 'react'
 
 import Start from "../rooms/00-Start"
+import WinFight from "../rooms/winFight"
 import One from "../rooms/01"
+import Two from "../rooms/02"
 
 export default function room(props) {
     const [player] = useState(props.player)
     const [character, updateCharacter] = useState(props.character)
+    const [previousRoom, updatePreviousRoom] = useState(0)
 
     const updateRoom = (room) => {
-        let updatedCharacter = {}
-        Object.assign(updatedCharacter, character)
-        updatedCharacter.room = room
-        updateCharacter(updatedCharacter)
+        // let updatedCharacter = {}
+        updatePreviousRoom(character.room)
+        // Object.assign(updatedCharacter, character)
+        // updatedCharacter.room = room
+        character.room = room
+        updateCharacter(character)
+    }
+
+    const handleFight = (mob) => {
+        const fight = (character, mob) => {
+            while (character.current_hitpoints > 0 && mob.hitpoints > 0) {
+                console.log(mob.hitpoints);
+                console.log(character.current_hitpoints);
+                
+                character.current_hitpoints -= mob.attack
+                mob.hitpoints -= character.attack
+            }
+    
+            return character
+        }
+
+        const fightResult = fight(character, mob)
+
+        if (fightResult.current_hitpoints > 0) {
+            console.log("You won!")
+            fightResult.items["rustyKey"] = true
+            updateCharacter(fightResult)
+            updateRoom("winFight")
+        }
     }
 
     const handleSave = () => {
@@ -56,10 +84,17 @@ export default function room(props) {
         });
     }
 
+    const roomFunctions = {
+        updateRoom: updateRoom,
+        updateCharacter: updateCharacter,
+        handleFight: handleFight
+    }
+
     const rooms = {
-        0: <Start updateRoom={updateRoom} updateCharacter={updateCharacter}/>,
-        1: <One updateRoom={updateRoom} updateCharacter={updateCharacter}/>,
-        2: ""
+        winFight: <WinFight character={character} previousRoom={previousRoom} roomFunctions={roomFunctions}/>,
+        0: <Start character={character} roomFunctions={roomFunctions}/>,
+        1: <One character={character} roomFunctions={roomFunctions}/>,
+        2: <Two character={character} roomFunctions={roomFunctions}/>,
     }
 
     return (
