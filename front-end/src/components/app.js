@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 import Login from './auth/login';
 import Register from './auth/register';
@@ -70,8 +72,19 @@ export default class App extends Component {
               </div>
             : 
               <div className="auth">
-                <Login callback={this.handleLogin}/>
-                <Register callback={this.handleLogin}/>
+                <Tabs>
+                  <TabList>
+                    <Tab>REGISTER</Tab>
+                    <Tab>LOGIN</Tab>
+                  </TabList>
+
+                  <TabPanel>
+                    <Register callback={this.handleLogin}/>
+                  </TabPanel>
+                  <TabPanel>
+                    <Login callback={this.handleLogin}/>
+                  </TabPanel>
+                </Tabs>
               </div>
             }
           </div>
