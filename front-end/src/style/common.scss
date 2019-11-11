@@ -10,8 +10,9 @@ body {
   text-align: center;
 }
 
+// TODO:  Might want to eventually break these into a class so they don't style all the inputs and buttons
 input {
-  width: 50%;
+  width: 80%;
   height: 42px;
   margin-bottom: 20px;
   border-radius: 6px;
@@ -21,7 +22,7 @@ input {
 }
 
 button {
-  width: 50%;
+  width: 80%;
   height: 42px;
   border-radius: 6px;
   color: white;
@@ -29,4 +30,19 @@ button {
   border: 2px solid white;
   font-weight: 900;
   font-size: 1rem;
+}
+
+// TODO:  Need to find a better way to style the tabs.  This will style all tabs throughout the page
+.react-tabs__tab-list {
+  border-bottom: none;
+  margin: 0 0 1px 0;
+  padding: 0;
+}
+
+.centered-column {
+  @include centered($flex-direction: column)
+}
+
+hr {
+  width: 100%;
 }

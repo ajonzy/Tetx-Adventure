@@ -15,7 +15,7 @@ export default function winFight(props) {
     }
 
     return (
-        <div className="win-fight">
+        <div className="win-fight centered-column">
             <p>You Won!!</p>
             <p>You gained the following items:</p>
             {renderItemsGained()}

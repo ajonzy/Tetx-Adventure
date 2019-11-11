@@ -76,7 +76,7 @@ export default function home(props) {
 
     return (
         player ?
-        <div className="home">
+        <div className="home centered-column">
             <h2>Welcome {player.username}!</h2>
             <h4>Select your character:</h4>
 
@@ -87,7 +87,7 @@ export default function home(props) {
             <p style={{visibility: emptynameError ? "visible" : "hidden"}}>Name can not be empty... Please enter a name</p>
 
             {Object.entries(save).length != 0 ?
-            <div>
+            <div className="centered-column">
                 <h4>Or reload last save</h4>
                 <button onClick={() => props.callback(player.save)}>Load</button>
             </div>

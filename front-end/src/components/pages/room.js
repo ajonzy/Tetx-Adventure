@@ -127,7 +127,7 @@ export default function room(props) {
     }
 
     return (
-        <div>
+        <div className="centered-column">
             <h2>Character: {character.name}</h2>
             {
                 character.current_hitpoints > 0 ? <button onClick={handleSave}>Save</button> : null

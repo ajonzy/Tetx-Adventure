@@ -57,7 +57,7 @@ export default class App extends Component {
 
         {this.state.characterSelected 
         ?
-          <div className="character-selected">
+          <div className="character-selected centered-column">
             <h2>Player: {this.state.user.username}</h2>
             <button onClick={this.handleLogout}>Log Out</button>
             <Room player={this.state.user} character={this.state.character}/>
@@ -66,7 +66,7 @@ export default class App extends Component {
           <div className="character-selection">
             {this.state.loggedIn 
             ? 
-              <div className="logged-in">
+              <div className="logged-in centered-column">
                 <button onClick={this.handleLogout}>Log Out</button>
                 <Home user={this.state.user} callback={this.handleCharacterSelect}/> 
               </div>
@@ -74,15 +74,15 @@ export default class App extends Component {
               <div className="auth">
                 <Tabs>
                   <TabList>
-                    <Tab>REGISTER</Tab>
                     <Tab>LOGIN</Tab>
+                    <Tab>REGISTER</Tab>
                   </TabList>
 
                   <TabPanel>
-                    <Register callback={this.handleLogin}/>
+                    <Login callback={this.handleLogin}/>
                   </TabPanel>
                   <TabPanel>
-                    <Login callback={this.handleLogin}/>
+                    <Register callback={this.handleLogin}/>
                   </TabPanel>
                 </Tabs>
               </div>
