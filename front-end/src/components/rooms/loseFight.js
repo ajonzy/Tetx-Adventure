@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function loseFight(props) {
     return (
-        <div className="lose-fight">
+        <div className="lose-fight centered-column">
             <p>You Lost!!</p>
             <p>You are dead :(</p>
             <p>Restart from last save?</p>

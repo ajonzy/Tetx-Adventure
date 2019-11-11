@@ -3,6 +3,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: 2px solid white;
+  padding: 40px 0;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
 }
 
 .login-register-wrapper {
